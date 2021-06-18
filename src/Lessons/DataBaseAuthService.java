@@ -13,14 +13,25 @@ public class DataBaseAuthService implements AuthService{
 
 
     @Override
-    public String isLoginExist(String login) {
-        return sqlSelect(String.format("SELECT login FROM auth WHERE login = '%s'", login));
+    public String isLoginExist(String login) throws SQLException {
+        String sql = "SELECT login FROM auth WHERE login = (?)";
+        prst = connection.prepareStatement(sql);
+        prst.setString(1, login);
+        ResultSet resultSet = prst.executeQuery();
+//        return sqlSelect(String.format("SELECT login FROM auth WHERE login = '%s'", login));
+        return resultSet.toString();
     }
 
     @Override
-    public String isNicknameExist(String nickname) {
-        return sqlSelect(String.format("SELECT nickname FROM auth WHERE nickname = '%s'", nickname));
+    public String isNicknameExist(String nickname) throws SQLException {
+        String sql = "SELECT nickname FROM auth WHERE nickname = (?)";
+        prst = connection.prepareStatement(sql);
+        prst.setString(1, nickname);
+        ResultSet resultSet = prst.executeQuery();
+//        return sqlSelect(String.format("SELECT nickname FROM auth WHERE nickname = '%s'", nickname));
+        return resultSet.toString();
     }
+
     private String sqlSelect(String sqlSelectQuery) {
         try {
             ResultSet rs = stmt.executeQuery(sqlSelectQuery);
@@ -49,6 +60,8 @@ public class DataBaseAuthService implements AuthService{
 
     public boolean changeNickname (String oldNickname, String newNickname) {
         try {
+
+
             stmt.executeUpdate(String.format("UPDATE auth SET nickname='%s' WHERE nickname='%s';", newNickname, oldNickname));
             logger.info("Пользователь " + oldNickname + " изменил никнейм на " + newNickname);
             return true;

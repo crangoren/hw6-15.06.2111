@@ -37,19 +37,20 @@ public class MyServer {
                 System.out.println("Сервер ожидает подключения");
                 Socket socket = server.accept();
                 System.out.println("Клиент подключился");
-                StringBuilder historyString = null;
-                try {
-                    historyString = historyShower.getHistoryChat();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                if(historyString != null){
-                    String[] mass = historyString.toString().split("\n");
-                    for (int i = 0; i < mass.length; i++) {
-                        String[] partsMass = mass[i].split(" ", 2);
-                        System.out.println((partsMass[0] + partsMass[1]));
-                    }
-                }
+                historyShower.getHistoryChat();
+//                StringBuilder historyString = null;
+//                try {
+//                    historyString = historyShower.getHistoryChat();
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
+//                if(historyString != null){
+//                    String[] mass = historyString.toString().split("\n");
+//                    for (int i = 0; i < mass.length; i++) {
+//                        String[] partsMass = mass[i].split(" ", 2);
+//                        System.out.println((partsMass[0] + partsMass[1]));
+//                    }
+//                }
 
                 //               Client.readHistory();
                 new ClientHandler(this, socket);

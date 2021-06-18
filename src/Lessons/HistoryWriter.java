@@ -1,6 +1,8 @@
 package Lessons;
 
 import java.io.*;
+import java.util.LinkedList;
+import java.util.List;
 
 public class HistoryWriter {
 
@@ -22,6 +24,28 @@ public class HistoryWriter {
             System.out.println(ex.getMessage());
         }
     }
+
+    public void getHistoryChat() throws IOException {
+        FileInputStream fileInputStream = new FileInputStream(file);
+        BufferedReader br = new BufferedReader(new InputStreamReader(fileInputStream));
+        String strLine;
+        List<String> history = new LinkedList<>();
+        while (br.readLine() != null) {
+            for (int i = 0; i < 10000; i++) {
+                history.add(br.readLine());
+                if (history.size() > 100) {
+                    history.remove(0);
+                }
+
+            }
+        }
+
+        System.out.println(history.toString());
+
+    }
+
+
+
     private int linesCount() throws IOException {
         try (InputStream is = new BufferedInputStream(new FileInputStream(file))) {
             byte[] c = new byte[1024];
@@ -42,36 +66,33 @@ public class HistoryWriter {
         }
     }
 
-    public StringBuilder getHistoryChat() throws IOException{
-        if (!file.exists()){
-            return null;
-        }
-        StringBuilder stringBuilder = new StringBuilder();
-        FileInputStream fileInputStream = new FileInputStream(file);
-        BufferedReader br = new BufferedReader(new InputStreamReader(fileInputStream));
-        String strLine;
-
-        int linesNumber = linesCount();
-        if(linesNumber > ChatConstants.VIEWCOUNT){
-            for (int i = 0; i <= linesNumber - ChatConstants.VIEWCOUNT; i++) {
-                br.readLine();
-            }
-        }
-
-
-
-
-        while ((strLine = br.readLine()) != null){
-            String[] list = strLine.split("-:-", 2);
-            if(list.length == 2) {
-                stringBuilder.append(list[0] + " " + list[1] + "\n");
-            }
-        }
-
-        return stringBuilder;
-
-
-    }
+//    public StringBuilder getHistoryChat() throws IOException{
+//        if (!file.exists()){
+//            return null;
+//        }
+//        StringBuilder stringBuilder = new StringBuilder();
+//        FileInputStream fileInputStream = new FileInputStream(file);
+//        BufferedReader br = new BufferedReader(new InputStreamReader(fileInputStream));
+//        String strLine;
+//
+//        int linesNumber = linesCount();
+//        if(linesNumber > ChatConstants.VIEWCOUNT){
+//            for (int i = 0; i <= linesNumber - ChatConstants.VIEWCOUNT; i++) {
+//                br.readLine();
+//            }
+//        }
+//
+//        while ((strLine = br.readLine()) != null){
+//            String[] list = strLine.split("-:-", 2);
+//            if(list.length == 2) {
+//                stringBuilder.append(list[0] + " " + list[1] + "\n");
+//            }
+//        }
+//
+//        return stringBuilder;
+//
+//
+//    }
 
 
 }
